@@ -1,10 +1,10 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useAccount, useConnect } from 'wagmi';
 import { useAuth } from '../auth/auth';
 
 function LoginPage() {
-  let navigate = useNavigate();
+  let history = useHistory();
   let location = useLocation();
   let auth = useAuth();
 
@@ -18,7 +18,7 @@ function LoginPage() {
     event.preventDefault();
 
     auth.signin(accountData.address, () => {
-      navigate(from, { replace: true });
+      history.replace(from);
     });
   }
 

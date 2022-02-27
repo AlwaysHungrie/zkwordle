@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useAccount, useConnect } from 'wagmi';
 import { useAuth } from '../auth/auth';
 
@@ -9,7 +9,8 @@ function AuthStatus() {
     fetchEns: true,
   });
   let auth = useAuth();
-  let navigate = useNavigate();
+  // let navigate = useNavigate();
+  let history = useHistory();
 
   const renderAuthStatus = () => {
     if (accountData) {
@@ -19,7 +20,7 @@ function AuthStatus() {
             Welcome {auth.user}!{' '}
             <button
               onClick={() => {
-                auth.signout(() => navigate('/'));
+                auth.signout(() => history.replace('/'));
               }}
             >
               Sign out

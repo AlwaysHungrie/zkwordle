@@ -1,23 +1,28 @@
-import { useLocation, Navigate } from 'react-router-dom';
+import { useLocation, Route, Redirect } from 'react-router-dom';
 import { useAccount, useConnect } from 'wagmi';
 import { useAuth } from './auth';
 
-function RequireAuth({ children }: { children: JSX.Element }) {
+function RequireAuth({ children, ...rest }: any) {
+  // const [{ data, error }, connect] = useConnect();
+  const [{ data: accountData }] = useAccount();
   let auth = useAuth();
-  let location = useLocation();
-
-  const [{ data, error }, connect] = useConnect();
-  const [{ data: accountData }, disconnect] = useAccount();
-
-  if (!accountData || !auth.user) {
-    // Redirect them to the /login page, but save the current location they were
-    // trying to go to when they were redirected. This allows us to send them
-    // along to that page after they login, which is a nicer user experience
-    // than dropping them off on the home page.
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
-
-  return children;
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        accountData?.address && auth.user ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { from: location },
+            }}
+          />
+        )
+      }
+    />
+  );
 }
 
 export default RequireAuth;

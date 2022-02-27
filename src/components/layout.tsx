@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Outlet, Link
+ Link
 } from 'react-router-dom'
 import AuthStatus from './authStatus';
 
@@ -20,8 +20,6 @@ function Layout() {
           <Link to="/game">Game Page</Link>
         </li>
       </ul>
-
-      <Outlet />
     </div>
   );
 }
